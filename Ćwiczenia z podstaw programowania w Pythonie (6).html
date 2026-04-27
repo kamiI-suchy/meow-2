@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pl"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Ćwiczenia z podstaw programowania w Pythonie (6)</title>
+<link rel="stylesheet" type="text/css" media="all" href="%C4%86wiczenia%20z%20podstaw%20programowania%20w%20Pythonie%20(6)_files/jquery-ui.css">
+<link rel="stylesheet" type="text/css" media="all" href="%C4%86wiczenia%20z%20podstaw%20programowania%20w%20Pythonie%20(6)_files/styles.css">
+<link rel="stylesheet" type="text/css" media="all" href="%C4%86wiczenia%20z%20podstaw%20programowania%20w%20Pythonie%20(6)_files/highlight.min.css">
+<script type="text/javascript" src="%C4%86wiczenia%20z%20podstaw%20programowania%20w%20Pythonie%20(6)_files/jquery.js"></script>
+<script type="text/javascript" src="%C4%86wiczenia%20z%20podstaw%20programowania%20w%20Pythonie%20(6)_files/jquery-ui.js"></script>
+<script type="text/javascript" src="%C4%86wiczenia%20z%20podstaw%20programowania%20w%20Pythonie%20(6)_files/main.js"></script>
+<script type="text/javascript" src="%C4%86wiczenia%20z%20podstaw%20programowania%20w%20Pythonie%20(6)_files/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<style>
+	table.balls td { text-align: center; vertical-align: middle; }
+</style>
+</head>
+<body>
+<h1>Ćwiczenia z podstaw programowania w Pythonie (6)</h1>
+<h3 style="margin: 0 auto; text-align: center;">Klasy i obiekty (3)</h3>
+
+
+<h2 id="h2_1">Ćwiczenie 1</h2>
+<p>
+Ćwiczenie polega na utworzeniu animacji trzech piłek, które odbijają się
+ od krawędzi okna o rozmiarze 640 x 480 pikseli. Poniżej tabela z danymi
+ (rozmiar, pozycja początkowa, prędkość) i grafikami piłek do pobrania:
+</p><table class="balls">
+	<tbody><tr>
+		<th>Nazwa (link)</th>
+			<td><a href="http://server.s308/z/img/python/ball_soccer.png" download="" target="_blank">ball_soccer.png</a></td>
+			<td><a href="http://server.s308/z/img/python/ball_volleyball.png" download="" target="_blank">ball_volleyball.png</a></td>
+			<td><a href="http://server.s308/z/img/python/ball_basketball.png" download="" target="_blank">ball_basketball.png</a></td>
+	</tr>
+	<tr>
+		<th>Grafika</th>
+			<td><img src="%C4%86wiczenia%20z%20podstaw%20programowania%20w%20Pythonie%20(6)_files/ball_soccer.png"></td>
+			<td><img src="%C4%86wiczenia%20z%20podstaw%20programowania%20w%20Pythonie%20(6)_files/ball_volleyball.png"></td>
+			<td><img src="%C4%86wiczenia%20z%20podstaw%20programowania%20w%20Pythonie%20(6)_files/ball_basketball.png"></td>
+	</tr>
+	<tr>
+		<th>Rozmiar grafiki (px)</th>
+			<td>100 x 100</td>
+			<td>90 x 90</td>
+			<td>120 x 120</td>
+	</tr>
+	<tr>
+		<th>Pozycja początkowa</th>
+			<td>x: 0, y: 0</td>
+			<td>x: 100, y: 200</td>
+			<td>x: 200, y: 50</td>
+	</tr>
+		<tr><th>Prędkość</th>
+			<td>dx: 5, dy: 5</td>
+			<td>dx: -4, dy: 4</td>
+			<td>dx: 8, dy: -8</td>
+	</tr><tr>
+
+	</tr>
+
+</tbody></table>
+
+Zadanie można napisać w oparciu o przykład kodu dla prostej animacji jednej piłki (bez odbijania od krawędzi):
+<pre><code class="python hljs"><span class="hljs-keyword">import</span> pygame
+<span class="hljs-keyword">import</span> sys
+
+pygame.init()
+fpsClock = pygame.time.Clock()
+screen = pygame.display.set_mode((<span class="hljs-number">640</span>, <span class="hljs-number">480</span>))
+ball = pygame.image.load(<span class="hljs-string">"ball_soccer.png"</span>)
+rect = ball.get_rect()
+
+<span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    <span class="hljs-keyword">for</span> event <span class="hljs-keyword">in</span> pygame.event.get():
+        <span class="hljs-keyword">if</span> event.type == pygame.QUIT:
+            sys.exit()
+
+    rect = rect.move([<span class="hljs-number">5</span>, <span class="hljs-number">5</span>])
+    screen.fill((<span class="hljs-number">100</span>, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>))
+    screen.blit(ball, rect)
+    pygame.display.update()
+    fpsClock.tick(<span class="hljs-number">50</span>)
+</code></pre>
+
+<!--Dodatkowo premiowane będzie wykonanie zadania z wykorzystaniem klas:-->
+Zadanie należy wykonać z wykorzystaniem klas:
+<ul>
+	<li><i><b>Ball</b></i>: zawiera właściwości związane z daną piłką oraz metodę <b>update()</b> odpowiedzialną za zmianę pozycji piłki na ekranie</li>
+	<li><i><b>Game</b></i>: zawiera właściwości i metody związane z ekranem
+ (inicjowanie, odświeżanie) oraz dodawaniem piłek do listy (potrzebne 
+przy odświeżaniu ekranu)</li>
+</ul>
+
+Uruchomienie poniższego kodu powinno wykonać animację trzech piłek odbijających się od krawędzi okna:
+<pre><code class="python hljs">game = Game()
+game.addBall(Ball(<span class="hljs-string">"ball_soccer.png"</span>, [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">5</span>]))
+game.addBall(Ball(<span class="hljs-string">"ball_basketball.png"</span>, [<span class="hljs-number">100</span>, <span class="hljs-number">200</span>], [<span class="hljs-number">-4</span>, <span class="hljs-number">4</span>]))
+game.addBall(Ball(<span class="hljs-string">"ball_volleyball.png"</span>, [<span class="hljs-number">200</span>, <span class="hljs-number">50</span>], [<span class="hljs-number">8</span>, <span class="hljs-number">-8</span>]))
+game.start()
+</code></pre>
+
+Przykładowe okno (screenshot) z piłkami podczas animacji:
+<div style="padding: 1em;">
+	<img src="%C4%86wiczenia%20z%20podstaw%20programowania%20w%20Pythonie%20(6)_files/balls_window.png" alt="" title="">
+</div>
+<p></p>
+
+
+
+
+<div style="padding: 2em; color: #aaa; font-style: italic; font-size: 0.8em; text-align: right;">
+© 2023 Przemysław Włodarski<br>
+lab. s.308, KPSiIM WE ZUT
+</div>
+
+
+
+</body></html>
